@@ -4,11 +4,12 @@
 
 body {
     background-color: rgb(8, 12, 37);
+    font-family: "Karla";
 }
 
 .allTheSHIT{
     display: flex;
-    justify-content: center;
+    justify-content:space-around;
     height: 100vh;
 }
 
@@ -18,4 +19,23 @@ body {
     flex-direction: column;
     padding: 10px;
     background-color: rgb(9, 18, 72);
+    color: white;
+}
+
+.visions{}
+
+.vision{
+    color: white;
+    gap: 7px;
+}
+
+.tasks{
+    color: white;
+    gap: 7px;
+    display: flex;
+    flex-direction: column;
+}
+
+.date{
+    color: white;
 }
