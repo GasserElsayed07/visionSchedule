@@ -1,22 +1,11 @@
 "use client";
-import "./global.css"
+import "./global.css";
 import Markdown from "react-markdown";
 import React, { useEffect, useState } from "react";
 import remarkGfm from "remark-gfm";
 
 export default function Page() {
   const [data, setData] = useState(null);
-
-  const [vision, setVision] = useState([])
-
-  const [prompt, setPrompt] = useState()
-  function addVision(formData){
-    const newVision = formData.get("vision");
-    setVision((prev) => {return [...prev, newVision]});
-    for(let i = 0; i < vision.length; i++) {
-      console.log(vision[i], "this is the vision");
-    }
-  }
 
   function getResponse() {
 
@@ -40,28 +29,38 @@ export default function Page() {
     };
 
     fetchData();
+  } // end of zeft
+
+  function addVision(formData){
+    const newVision = formData.get("vision");
+    console.log("test vision input, newVision: " + newVision);
   }
-  if(data)console.log(data.schedule, "this is the data ");
+  
   return (
     <div className="allTheSHIT">
 
-      <div>
+      <div className="vision">
         <form action={addVision}>
-          <input type="text" name="vision" />
+          <input type="text" name="vision"></input>
           <button>add vision</button>
         </form>
-      </div>
+      </div> 
 
       <div className="schedule">
-        <button onClick={getResponse}>Generate Schedule</button>
-        <h1>Server Response</h1>
-        {data ? (
-          <Markdown rehypePlugins={[remarkGfm]}>
-            {data.schedule}
-          </Markdown>
-        ) : (
-          <p>Loading...</p>
-        )}
+        <h1>Your Schedule</h1>
+      </div>
+
+      <div className="input">
+
+        <form>
+          <input type="text" name="task"></input>
+          <button>enter task</button>
+        </form>
+
+        <form>
+          <input type="text" name="date"></input>
+          <button>enter date</button>
+        </form>
       </div>
     </div>
   );
