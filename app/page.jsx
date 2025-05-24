@@ -1,33 +1,68 @@
-"use client"
-import React, { useEffect , useState } from "react"
+"use client";
+import "./global.css"
+import Markdown from "react-markdown";
+import React, { useEffect, useState } from "react";
+import remarkGfm from "remark-gfm";
 
 export default function Page() {
-  const [data , setData] = useState(null)
+  const [data, setData] = useState(null);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const res = await fetch('/api/generate', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ prompt: 'I need to make time for studying, coding, and gym, make blocks 2hours' }),
-      })
-      const result = await res.json()
-      setData(result)
+  const [vision, setVision] = useState([])
+
+  const [prompt, setPrompt] = useState()
+  function addVision(formData){
+    const newVision = formData.get("vision");
+    setVision((prev) => {return [...prev, newVision]});
+    for(let i = 0; i < vision.length; i++) {
+      console.log(vision[i], "this is the vision");
     }
+  }
 
-    fetchData()
-  } , [])
-  console.log(data  , "this is the data ")
-    return (
+  function getResponse() {
+
+    for (let i = 0; i < vision.length; i++) {
+      prompt += vision[i] + " ";
+    }
+    console.log(prompt, "this is the prompt");
+    const fetchData = async () => {
+      const res = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          prompt:
+            `Generate a schedule for the following visions: ${prompt}`,
+        }),
+      });
+      const result = await res.json();
+      setData(result);
+    };
+
+    fetchData();
+  }
+  if(data)console.log(data.schedule, "this is the data ");
+  return (
+    <div className="allTheSHIT">
+
       <div>
+        <form action={addVision}>
+          <input type="text" name="vision" />
+          <button>add vision</button>
+        </form>
+      </div>
+
+      <div className="schedule">
+        <button onClick={getResponse}>Generate Schedule</button>
         <h1>Server Response</h1>
         {data ? (
-          <pre>{JSON.stringify(data , null , 2)}</pre>
+          <Markdown rehypePlugins={[remarkGfm]}>
+            {data.schedule}
+          </Markdown>
         ) : (
           <p>Loading...</p>
         )}
       </div>
-    )
-  }
+    </div>
+  );
+}

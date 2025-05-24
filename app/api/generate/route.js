@@ -19,7 +19,7 @@ export async function POST(req) {
             'Content-Type': 'application/json',
         },
         body: JSON.stringify({
-            model: 'gpt-4o-mini', // gpt-4.1 is not a public model name; using closest available
+            model: 'gpt-4o-mini', 
             messages: [
                 {
                     role: 'system',
@@ -27,7 +27,7 @@ export async function POST(req) {
                 },
                 {
                     role: 'user',
-                    content: `Create a detailed schedule based on this prompt: ${prompt}`,
+                    content: `Create a detailed schedule based on this prompt: ${prompt}. Format it in raw Markdown suitable for direct display in a Markdown renderer, but do not wrap it in triple backticks.`,
                 },
             ],
             max_tokens: 800,
