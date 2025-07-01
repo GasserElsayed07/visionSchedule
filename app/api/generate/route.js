@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
 
 export async function POST(req) {
-    const { prompt } = await req.json();
+    const { messages } = await req.json();
 
-    if (!prompt) {
-        return NextResponse.json({ error: 'Prompt is required.' }, { status: 400 });
+    if (!messages) {
+        return NextResponse.json({ error: 'Messages are required.' }, { status: 400 });
     }
 
     const apiKey = process.env.OPENAI_API_KEY;
@@ -20,16 +20,7 @@ export async function POST(req) {
         },
         body: JSON.stringify({
             model: 'gpt-4o-mini', 
-            messages: [
-                {
-                    role: 'system',
-                    content: 'You are a helpful assistant that creates detailed, practical schedules based on user prompts.',
-                },
-                {
-                    role: 'user',
-                    content: `Create a detailed schedule based on this prompt: ${prompt}. Format it in raw Markdown suitable for direct display in a Markdown renderer, but do not wrap it in triple backticks.`,
-                },
-            ],
+            messages: messages,
             max_tokens: 800,
             temperature: 0.7,
         }),

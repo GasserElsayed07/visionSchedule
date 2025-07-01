@@ -22,7 +22,11 @@ body {
     color: white;
 }
 
-.visions{}
+.visions{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
 
 .vision{
     color: white;
